@@ -94,30 +94,32 @@ export const GolfScene: React.FC = () => {
 
   return (
     <div className="relative w-full h-full">
-      {/* Floating Camera Toolbar on top-right of 3D viewport */}
-      <div className="absolute top-3 right-3 z-10 pointer-events-auto">
+      {/* Floating Camera Toolbar below top bar on top-right of 3D viewport */}
+      <div className="absolute top-14 right-3 z-30 pointer-events-auto">
         <CameraToolbar />
       </div>
 
       <Canvas
         shadows
         dpr={[1, 2]}
-        camera={{ position: [4, 4.5, 14], fov: 40, near: 0.1, far: 180 }}
+        camera={{ position: [4, 4.5, 14], fov: 40, near: 0.1, far: 2000 }}
       >
+        <color attach="background" args={['#38bdf8']} />
+
         {/* Realistic Atmospheric Sky */}
         <Sky
-          distance={450000}
+          distance={1000}
           sunPosition={[24, 38, 20]}
           inclination={0.55}
           azimuth={0.22}
-          turbidity={7}
-          rayleigh={1.4}
+          turbidity={4}
+          rayleigh={1.2}
           mieCoefficient={0.005}
           mieDirectionalG={0.8}
         />
 
         {/* Ambient & Hemisphere Lighting */}
-        <ambientLight intensity={0.42} />
+        <ambientLight intensity={0.45} />
         <hemisphereLight args={['#dbeafe', '#14532d', 0.65]} />
 
         {/* High Resolution Directional Sunlight with Soft PCF Shadows */}

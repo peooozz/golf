@@ -48,30 +48,33 @@ export const Hazards: React.FC<HazardsProps> = ({
           if (obs.type === 'water') {
             return (
               <group key={idx} position={[cx, cy, 0]}>
-                {/* Main translucent sparkling water body */}
+                {/* Recessed water body beneath fairway */}
                 <mesh
                   ref={(el) => {
                     waterRefs.current[idx] = el;
                   }}
                   receiveShadow
                 >
-                  <boxGeometry args={[obs.w, obs.h, 5.5]} />
+                  <boxGeometry args={[obs.w, obs.h, 5.0]} />
+                  <meshStandardMaterial
+                    color={isHit ? hitColor : '#0369a1'}
+                    roughness={0.2}
+                  />
+                </mesh>
+                {/* Sparkling translucent surface flush with fairway */}
+                <mesh position={[0, obs.h / 2 + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+                  <planeGeometry args={[obs.w, 4.8]} />
                   <meshPhysicalMaterial
-                    color={isHit ? hitColor : '#0284c7'}
+                    color={isHit ? hitColor : '#38bdf8'}
                     roughness={0.06}
-                    metalness={0.15}
-                    transmission={0.65}
+                    metalness={0.2}
+                    transmission={0.6}
                     ior={1.33}
                     transparent
                     opacity={0.88}
                   />
                 </mesh>
-                {/* Shoreline edge frame */}
-                <mesh position={[0, -obs.h / 2 - 0.04, 0]} receiveShadow>
-                  <boxGeometry args={[obs.w + 0.18, 0.1, 5.65]} />
-                  <meshStandardMaterial color="#44403c" roughness={0.9} />
-                </mesh>
-                {/* Animated surface ripple rings */}
+                {/* Surface ripple rings */}
                 <mesh position={[0, obs.h / 2 + 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                   <ringGeometry args={[Math.min(obs.w, 1.4) * 0.25, Math.min(obs.w, 1.4) * 0.35, 28]} />
                   <meshBasicMaterial color="#e0f2fe" side={THREE.DoubleSide} transparent opacity={0.65} />
@@ -83,19 +86,26 @@ export const Hazards: React.FC<HazardsProps> = ({
           if (obs.type === 'sand') {
             return (
               <group key={idx} position={[cx, cy, 0]}>
-                {/* Main bunker sand bed */}
+                {/* Sunken bunker depression */}
                 <mesh receiveShadow>
-                  <boxGeometry args={[obs.w, obs.h, 5.2]} />
+                  <boxGeometry args={[obs.w, obs.h, 4.8]} />
                   <meshStandardMaterial
-                    color={isHit ? hitColor : '#fde047'}
-                    roughness={0.96}
-                    metalness={0.02}
+                    color={isHit ? hitColor : '#ca8a04'}
+                    roughness={0.95}
                   />
                 </mesh>
-                {/* Soft bunker grassy rim lip */}
-                <mesh position={[0, obs.h / 2, 0]} scale={[obs.w * 0.52, 0.14, 2.6]}>
-                  <sphereGeometry args={[1, 20, 14]} />
-                  <meshStandardMaterial color={isHit ? hitColor : '#eab308'} roughness={0.92} />
+                {/* Flat sand bed flush with fairway turf */}
+                <mesh position={[0, obs.h / 2 + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+                  <planeGeometry args={[obs.w, 4.6]} />
+                  <meshStandardMaterial
+                    color={isHit ? hitColor : '#fde047'}
+                    roughness={0.92}
+                  />
+                </mesh>
+                {/* Soft bunker rim fringe */}
+                <mesh position={[0, obs.h / 2 + 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                  <ringGeometry args={[obs.w * 0.42, obs.w * 0.5, 24]} />
+                  <meshBasicMaterial color="#eab308" side={THREE.DoubleSide} />
                 </mesh>
               </group>
             );

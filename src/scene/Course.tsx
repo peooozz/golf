@@ -242,6 +242,37 @@ export const Course: React.FC<CourseProps> = ({ level }) => {
           </mesh>
         </group>
       )}
+
+      {/* 9. EXPANSIVE SURROUNDING GOLF RESORT LANDSCAPE & ROLLING HILLS */}
+      <group position={[courseSpan * 0.45, -2.6, -8]}>
+        {/* Expansive green turf meadow extending out to the horizon */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[500, 500]} />
+          <meshStandardMaterial color="#15803d" roughness={0.92} />
+        </mesh>
+
+        {/* Scenic rolling hills in the background */}
+        {[-80, -45, -10, 25, 60, 95].map((hx, i) => (
+          <mesh key={`hill-${i}`} position={[hx, 0, -42 - (i % 3) * 15]} scale={[38, 14, 25]}>
+            <sphereGeometry args={[1, 16, 12]} />
+            <meshStandardMaterial color="#14532d" roughness={0.95} />
+          </mesh>
+        ))}
+
+        {/* Distant pine forest clusters along the ridge */}
+        {[-60, -35, -15, 10, 35, 55, 80].map((tx, i) => (
+          <group key={`ridge-tree-${i}`} position={[tx, 7.0, -48 - (i % 2) * 10]} scale={2.6}>
+            <mesh position={[0, 1.2, 0]} castShadow>
+              <coneGeometry args={[0.9, 2.6, 7]} />
+              <meshStandardMaterial color="#0f3d1f" roughness={0.8} />
+            </mesh>
+            <mesh position={[0, 0.2, 0]}>
+              <cylinderGeometry args={[0.15, 0.2, 0.8, 6]} />
+              <meshStandardMaterial color="#451a03" roughness={0.9} />
+            </mesh>
+          </group>
+        ))}
+      </group>
     </group>
   );
 };
